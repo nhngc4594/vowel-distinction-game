@@ -1,4 +1,4 @@
-/* style.css */
+/* style.css - CORRECTED VERSION */
 
 /* --- Base Layout & Fonts --- */
 body {
@@ -9,7 +9,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    /* Align content to the top */
     min-height: 100vh;
 }
 
@@ -63,6 +62,11 @@ p {
     transform: translateY(-2px);
 }
 
+.level-button:focus {
+    outline: 3px solid #0056b3;
+    outline-offset: 2px;
+}
+
 /* --- Game Layout & Info Bar --- */
 .game-layout-container {
     display: flex;
@@ -96,10 +100,10 @@ p {
     transition: transform 0.2s, box-shadow 0.2s;
     overflow: hidden;
     height: 120px;
-    /* Fixed height for consistent layout */
     display: flex;
     align-items: center;
     justify-content: center;
+    outline: none;
 }
 
 .game-card:hover {
@@ -107,11 +111,18 @@ p {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* FIXED: Keyboard focus indicator for accessibility */
+.game-card:focus {
+    outline: 3px solid #007bff;
+    outline-offset: 2px;
+}
+
 .game-card img {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
     border-radius: 6px;
+    pointer-events: none;
 }
 
 /* Feedback Colors */
@@ -127,16 +138,21 @@ p {
     animation: shake 0.5s 1;
 }
 
+/* FIXED: Disabled state during processing to prevent race condition */
+.game-card.disabled {
+    pointer-events: none;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 /* --- Animations --- */
 @keyframes pulse-correct {
     0% {
         transform: scale(1);
     }
-
     50% {
         transform: scale(1.05);
     }
-
     100% {
         transform: scale(1);
     }
@@ -146,23 +162,18 @@ p {
     0% {
         transform: translateX(0);
     }
-
     20% {
         transform: translateX(-5px);
     }
-
     40% {
         transform: translateX(5px);
     }
-
     60% {
         transform: translateX(-5px);
     }
-
     80% {
         transform: translateX(5px);
     }
-
     100% {
         transform: translateX(0);
     }
@@ -190,6 +201,11 @@ p {
     background-color: #e0e0e0;
 }
 
+#replayBtn:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
 .back-btn {
     padding: 10px 20px;
     font-size: 1em;
@@ -204,6 +220,11 @@ p {
 
 .back-btn:hover {
     background-color: #5a6268;
+}
+
+.back-btn:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
 }
 
 .primary-btn {
@@ -222,19 +243,19 @@ p {
     background-color: #218838;
 }
 
+.primary-btn:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
 /* --- Sound Introduction Button Color --- */
 .primary-btn.intro-btn-special {
     background-color: #5bc0de;
-    /* Light blue color */
 }
 
 .primary-btn.intro-btn-special:hover {
     background-color: #31b0d5;
-    /* Darker blue for hover effect */
 }
-
-/* ------------------------------------------------ */
-
 
 /* --- Progress Bar --- */
 .progress-container {
@@ -252,8 +273,7 @@ p {
     transition: width 0.4s ease-in-out;
 }
 
-/* --- End Game / Diagnostic Report Styles (NEW) --- */
-
+/* --- End Game / Diagnostic Report Styles --- */
 .diagnostic-report-container {
     text-align: left;
     margin: 20px auto;
@@ -270,7 +290,6 @@ p {
     border-bottom: 2px solid #eee;
     padding-bottom: 5px;
     color: #007bff;
-    /* Highlight the heading */
 }
 
 .diagnostic-report-container p {
@@ -283,89 +302,77 @@ p {
     color: #333;
 }
 
-
-/* --- SOUND INTRODUCTION STYLING CHANGES (UPDATED FOR COMPACTNESS) --- */
-
-/* 1. Grid Layout for Cards */
+/* --- Sound Introduction Styling --- */
 .vowel-card-grid {
     display: grid;
-    /* Allows for more cards per row on wider screens */
     grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
     gap: 5px;
-    /* Further reduced gap between cards */
     padding: 5px;
-    /* Reduced padding on the grid itself */
     justify-content: center;
     max-width: 1000px;
     margin: 0 auto;
 }
 
-/* 2. Style for the Card Box */
 .sound-intro-card {
     text-align: center;
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 5px;
-    /* Greatly reduced padding inside the box */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     cursor: pointer;
-    /* Ensures card content flows correctly */
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* REMOVED FIXED HEIGHT to let the card shrink to fit content */
+    transition: transform 0.2s, box-shadow 0.2s;
+    outline: none;
 }
 
-/* 3. The Image Container (NEW) */
+.sound-intro-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* FIXED: Keyboard focus for accessibility */
+.sound-intro-card:focus {
+    outline: 3px solid #007bff;
+    outline-offset: 2px;
+}
+
 .card-image-container {
     position: relative;
-    /* Allows overlay positioning */
     width: 100%;
     max-height: 100px;
-    /* Reduced max height */
     overflow: hidden;
     border-radius: 4px;
 }
 
-/* 4. The Card Image */
 #app-container .sound-intro-card img {
-    /* Image now fills its container */
     width: 100% !important;
     height: 100% !important;
     max-height: 100px !important;
     object-fit: cover;
-    /* Ensures image fills container without distortion */
 }
 
-/* 5. The Title Overlay (NEW) */
 .card-title-overlay {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    /* Slightly darker semi-transparent black bar */
     color: white;
     font-size: 0.75em;
-    /* Reduced font size */
     font-weight: bold;
     padding: 2px 0;
-    /* Reduced padding on the text overlay */
-    /* Capitalize text for a bold look */
     text-transform: uppercase;
 }
 
-/* 6. Hiding the Vowel Name at the Top */
 .sound-intro-card h3 {
-    /* Hide the original h3 that was at the top */
     display: none;
 }
 
-
-/* Ensure the small replay button in-game is not huge green */
+/* Small replay button styling */
 .primary-btn-small {
     background-color: #4CAF50;
-    /* Green */
     color: white;
     padding: 8px 16px;
     border: none;
@@ -374,4 +381,63 @@ p {
     font-size: 14px;
     margin: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.primary-btn-small:hover {
+    background-color: #45a049;
+}
+
+.primary-btn-small:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* FIXED: Loading indicator for future use */
+.loading-indicator {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0, 123, 255, 0.3);
+    border-top-color: #007bff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-left: 10px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- Responsive Design (Mobile friendly) --- */
+@media (max-width: 600px) {
+    #app-container {
+        padding: 20px;
+        max-width: 100%;
+    }
+    
+    .game-cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .game-card {
+        height: 100px;
+    }
+    
+    h1 {
+        font-size: 1.5em;
+    }
+    
+    .vowel-card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    }
+}
+
+@media (max-width: 400px) {
+    .game-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
 }
