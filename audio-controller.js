@@ -7,6 +7,7 @@ import { showMainMenu } from './main-menu.js';
 const FEEDBACK_DELAY_MS = 1000;
 const LEVEL2_WEIGHTS = [0.4, 0.4, 0.2];
 const MAX_SELECTION_ATTEMPTS = 5;
+const LEVEL2_MAX_MISTAKES = 3; // FIXED: Track mistakes for Level 2 failure
 
 // --- GAME STAGE DATA ---
 const GAME_STAGES = {
@@ -16,7 +17,7 @@ const GAME_STAGES = {
         { id: '1B', name: 'Short Vowels (U, O, OO)', rounds: 7, vowels: ['umbrella', 'ostrich', 'foot'] },
         { id: '1C', name: 'Long Vowels (A, I, O)', rounds: 7, vowels: ['acorn', 'icecream', 'ocean'] },
         { id: '1D', name: 'Long Vowels (U, E) & AU', rounds: 7, vowels: ['ukulele', 'eagle', 'australia'] },
-        { id: '1E', name: 'R-Controlled & Special Sounds', rounds: 7, vowels: ['earth', 'oil', 'owl'] } // FIXED: replaced 'horn', 'spoon'
+        { id: '1E', name: 'R-Controlled & Special Sounds', rounds: 7, vowels: ['earth', 'oil', 'owl'] }
     ],
 
     // LEVEL 2: DISTINCTION
@@ -61,12 +62,13 @@ let replaysUsed = 0;
 let currentRoundAudioPath = '';
 let lastCorrectVowelName = '';
 let currentSubLevelVowelQueue = [];
-let isProcessingClick = false; // FIXED: Prevents race condition
-let currentAudioElement = null; // FIXED: For proper audio cleanup
+let isProcessingClick = false;
+let currentAudioElement = null;
+let audioPreloadCache = {}; // FIXED: Cache for preloaded audio
 
 // --- HELPER FUNCTIONS ---
 
-// FIXED: Audio playback with error handling and cleanup
+// FIXED: Improved audio playback with preloading support
 function playAudio(audioPath) {
     // Clean up previous audio if it exists
     if (currentAudioElement) {
@@ -75,24 +77,52 @@ function playAudio(audioPath) {
         currentAudioElement = null;
     }
     
-    const audio = new Audio(audioPath);
+    // Check if audio is preloaded
+    let audio;
+    if (audioPreloadCache[audioPath]) {
+        audio = audioPreloadCache[audioPath];
+        audio.currentTime = 0; // Reset to beginning
+    } else {
+        audio = new Audio(audioPath);
+    }
+    
     currentAudioElement = audio;
     
     // Cleanup after playback
     audio.addEventListener('ended', () => {
-        audio.src = '';
         if (currentAudioElement === audio) {
             currentAudioElement = null;
         }
     });
     
-    // Play with error handling
-    audio.play().catch(error => {
-        console.error('Audio playback failed:', error);
-        alert('Audio failed to play. Please check your connection or audio settings.');
-    });
+    // FIXED: Better error handling with retry logic
+    const playPromise = audio.play();
+    
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.error('Audio playback failed:', error);
+            
+            // Retry once after a short delay
+            setTimeout(() => {
+                audio.play().catch(retryError => {
+                    console.error('Audio retry failed:', retryError);
+                    alert('Audio failed to play. This may be due to browser autoplay restrictions. Please click the Replay button to hear the sound.');
+                });
+            }, 100);
+        });
+    }
     
     return audio;
+}
+
+// FIXED: Preload audio files to reduce loading issues
+function preloadAudio(audioPath) {
+    if (!audioPreloadCache[audioPath]) {
+        const audio = new Audio();
+        audio.preload = 'auto';
+        audio.src = audioPath;
+        audioPreloadCache[audioPath] = audio;
+    }
 }
 
 function updateScoreAndRoundDisplay() {
@@ -123,12 +153,11 @@ function updateProgressBar() {
     }
 }
 
-// NOTE: This function is only used by Level 1 now
 function renderCards(cardsToRender) {
     const gameContainer = document.getElementById('game-container');
     if (!gameContainer) return;
 
-    gameContainer.innerHTML = ''; // Clear existing cards
+    gameContainer.innerHTML = '';
 
     cardsToRender.forEach(card => {
         const cardElement = document.createElement('div');
@@ -142,7 +171,6 @@ function renderCards(cardsToRender) {
         img.src = card.content;
         img.alt = `${card.matchId} vowel card`;
         
-        // FIXED: Image error handling
         img.onerror = function() {
             this.src = 'images/placeholder.jpg';
             this.alt = 'Image not available';
@@ -153,16 +181,15 @@ function renderCards(cardsToRender) {
     });
 }
 
-// FIXED: Race condition prevention
+// FIXED: Track mistakes properly
 function handleCardClick(event) {
-    if (isProcessingClick) return; // Prevent multiple clicks
+    if (isProcessingClick) return;
     
     const clickedCardElement = event.target.closest('.game-card');
     if (!clickedCardElement) return;
 
-    isProcessingClick = true; // Lock clicking
+    isProcessingClick = true;
     
-    // Disable all cards visually
     document.querySelectorAll('.game-card').forEach(card => {
         card.classList.add('disabled');
     });
@@ -179,19 +206,19 @@ function handleCardClick(event) {
             document.querySelectorAll('.game-card').forEach(card => {
                 card.classList.remove('disabled');
             });
-            isProcessingClick = false; // Unlock clicking
+            isProcessingClick = false;
             startNewRound();
         }, FEEDBACK_DELAY_MS);
     } else {
         clickedCardElement.classList.add('incorrect');
-        mistakes++;
+        mistakes++; // FIXED: Increment mistakes counter
         
         setTimeout(() => {
             clickedCardElement.classList.remove('incorrect');
             document.querySelectorAll('.game-card').forEach(card => {
                 card.classList.remove('disabled');
             });
-            isProcessingClick = false; // Unlock clicking
+            isProcessingClick = false;
         }, FEEDBACK_DELAY_MS);
     }
 }
@@ -204,7 +231,7 @@ function isDifficultVowel(vowelName) {
 }
 
 function shuffleArray(array) {
-    const shuffled = [...array]; // Create a copy to avoid mutating original
+    const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
@@ -244,10 +271,8 @@ export function startNewRound() {
     let correctVowelName = '';
 
     if (currentLevelId === 'level2') {
-        // --- LEVEL 2: Fixed Card Pool & Weighted Audio Selection ---
         const targetVowels = subLevel.targetVowels;
 
-        // Weighted selection with repeat prevention
         let selectedName;
         let attempts = 0;
         do {
@@ -258,10 +283,8 @@ export function startNewRound() {
         correctVowelName = selectedName;
 
     } else if (currentLevelId === 'level1_familiarize') {
-        // --- LEVEL 1: Controlled Distribution Logic ---
         correctVowelName = currentSubLevelVowelQueue.shift();
 
-        // Simple repeat prevention
         if (correctVowelName === lastCorrectVowelName && currentSubLevelVowelQueue.length > 0) {
             currentSubLevelVowelQueue.push(correctVowelName);
             correctVowelName = currentSubLevelVowelQueue.shift();
@@ -269,7 +292,6 @@ export function startNewRound() {
 
         const correctVowel = VOWEL_DATA.find(v => v.name === correctVowelName);
 
-        // Render cards for Level 1
         const allOtherVowelNames = VOWEL_DATA.map(v => v.name).filter(name => name !== correctVowelName);
         const subLevelVowels = subLevel.vowels;
 
@@ -309,10 +331,7 @@ export function startNewRound() {
         renderCards(cardsToRender);
     }
 
-    // 3. Play Audio
     const finalCorrectVowel = VOWEL_DATA.find(v => v.name === correctVowelName);
-
-    // Filter for words only (exclude vowel sound file)
     const availableWords = finalCorrectVowel.words.filter(word => !word.audio.includes('vowel_sound_only'));
 
     if (!finalCorrectVowel || availableWords.length === 0) {
@@ -338,40 +357,42 @@ function endGame() {
     const isLastSubLevel = currentSubLevelIndex === subLevels.length - 1;
     const isLevel2 = currentLevelId === 'level2';
 
-    // Diagnostic stats
     const finalScore = score;
     const finalReplays = replaysUsed;
+    const finalMistakes = mistakes; // FIXED: Track final mistakes
     const maxRounds = subLevel.rounds;
 
     const diagnosticReport = `
         <div class="diagnostic-report-container">
             <h3>Performance Summary:</h3>
             <p>Rounds Completed: <strong>${finalScore} / ${maxRounds}</strong></p>
+            <p>Mistakes Made: <strong>${finalMistakes}</strong></p>
             <p>Replays Used: <strong>${finalReplays}</strong></p>
         </div>
     `;
 
-    // Level 2 pass/fail check
+    // FIXED: Level 2 pass/fail includes mistakes
     let passLevel = true;
     let feedbackTitle = `Sub-Level ${subLevel.id} Complete!`;
     let feedbackMessage = `Ready for the next challenge. Next: **${subLevels[currentSubLevelIndex + 1]?.name || 'Final Challenge'}**`;
 
     if (isLevel2) {
-        if (finalScore < maxRounds || finalReplays >= 2) {
+        // FIXED: Fail if less than 5/5 OR 2+ replays OR 3+ mistakes
+        if (finalScore < maxRounds || finalReplays >= 2 || finalMistakes >= LEVEL2_MAX_MISTAKES) {
             passLevel = false;
             feedbackTitle = "Nice Try! Practice Required";
-            feedbackMessage = `To ensure mastery of this distinction, please complete this section perfectly (5/5 correct and using the replay button less than twice).`;
+            feedbackMessage = `To ensure mastery of this distinction, please complete this section perfectly (5/5 correct, fewer than 3 mistakes, and fewer than 2 replays).`;
         }
     }
 
     // Reset state
     score = 0;
     replaysUsed = 0;
+    mistakes = 0; // FIXED: Reset mistakes
     lastCorrectVowelName = '';
     currentSubLevelVowelQueue = [];
-    isProcessingClick = false; // FIXED: Reset click lock
+    isProcessingClick = false;
 
-    // Render end screen
     if (!isLevel2 || passLevel) {
         if (currentLevelId === 'level1_familiarize' && isLastSubLevel) {
             appContainer.innerHTML = `
@@ -427,38 +448,47 @@ function endGame() {
 }
 
 export function startGame(level) {
-    // Determine level ID
     if (level === 'level2_hard' || level === 'level2') {
         currentLevelId = 'level2';
     } else {
         currentLevelId = 'level1_familiarize';
     }
 
-    // Reset all stats
     currentRound = 0;
     score = 0;
     replaysUsed = 0;
+    mistakes = 0; // FIXED: Reset mistakes
     lastCorrectVowelName = '';
-    isProcessingClick = false; // FIXED: Reset click lock
+    isProcessingClick = false;
 
     const subLevels = GAME_STAGES[currentLevelId];
     const subLevel = subLevels[currentSubLevelIndex];
     const totalRounds = subLevel.rounds;
 
-    // Setup vowel queue / card render
     currentSubLevelVowelQueue = [];
     let cardsToRender = [];
 
     if (currentLevelId === 'level1_familiarize') {
-        // Level 1: Initialize queue (3, 2, 2 distribution)
         const targetVowels = subLevel.vowels;
         let queue = [];
         queue.push(targetVowels[0], targetVowels[0], targetVowels[0]);
         queue.push(targetVowels[1], targetVowels[1]);
         queue.push(targetVowels[2], targetVowels[2]);
         currentSubLevelVowelQueue = shuffleArray(queue);
+
+        // FIXED: Preload audio for better performance
+        targetVowels.forEach(vowelName => {
+            const vowel = VOWEL_DATA.find(v => v.name === vowelName);
+            if (vowel) {
+                vowel.words.forEach(word => {
+                    if (!word.audio.includes('vowel_sound_only')) {
+                        preloadAudio(word.audio);
+                    }
+                });
+            }
+        });
+
     } else if (currentLevelId === 'level2') {
-        // Level 2: Prepare fixed cards
         const targetVowelNames = subLevel.targetVowels;
         const allVowelsForRound = targetVowelNames.map(name => VOWEL_DATA.find(v => v.name === name));
 
@@ -468,6 +498,18 @@ export function startGame(level) {
             content: vowel.image,
             matchId: vowel.name
         })));
+
+        // FIXED: Preload audio for Level 2
+        targetVowelNames.forEach(vowelName => {
+            const vowel = VOWEL_DATA.find(v => v.name === vowelName);
+            if (vowel) {
+                vowel.words.forEach(word => {
+                    if (!word.audio.includes('vowel_sound_only')) {
+                        preloadAudio(word.audio);
+                    }
+                });
+            }
+        });
     }
 
     const appContainer = document.getElementById('app-container');
@@ -492,7 +534,6 @@ export function startGame(level) {
         </div>
     `;
 
-    // Render fixed cards for Level 2
     if (currentLevelId === 'level2' && cardsToRender.length > 0) {
         const gameContainer = document.getElementById('game-container');
         if (gameContainer) {
@@ -511,10 +552,8 @@ export function startGame(level) {
         }
     }
 
-    // Start first round
     startNewRound();
 
-    // Event listeners
     document.getElementById('backToMenuBtn').addEventListener('click', showMainMenu);
     document.getElementById('replayBtn').addEventListener('click', () => {
         if (currentRoundAudioPath) {
