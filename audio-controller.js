@@ -7,7 +7,7 @@ import { showMainMenu } from './main-menu.js';
 const FEEDBACK_DELAY_MS = 1000;
 const LEVEL2_WEIGHTS = [0.4, 0.4, 0.2];
 const MAX_SELECTION_ATTEMPTS = 5;
-const LEVEL2_MAX_MISTAKES = 3; // FIXED: Track mistakes for Level 2 failure
+const LEVEL2_MAX_MISTAKES = 3;
 
 // --- GAME STAGE DATA ---
 const GAME_STAGES = {
@@ -64,65 +64,107 @@ let lastCorrectVowelName = '';
 let currentSubLevelVowelQueue = [];
 let isProcessingClick = false;
 let currentAudioElement = null;
-let audioPreloadCache = {}; // FIXED: Cache for preloaded audio
+let audioPreloadCache = {};
+let isAudioLoading = false;
 
 // --- HELPER FUNCTIONS ---
 
-// FIXED: Improved audio playback with preloading support
-function playAudio(audioPath) {
-    // Clean up previous audio if it exists
-    if (currentAudioElement) {
-        currentAudioElement.pause();
-        currentAudioElement.src = '';
-        currentAudioElement = null;
+// FIXED: Completely rewritten audio system with better loading
+function preloadAudio(audioPath) {
+    return new Promise((resolve, reject) => {
+        if (audioPreloadCache[audioPath]) {
+            resolve(audioPreloadCache[audioPath]);
+            return;
+        }
+
+        const audio = new Audio();
+        audio.preload = 'auto';
+        
+        audio.addEventListener('canplaythrough', () => {
+            audioPreloadCache[audioPath] = audio;
+            resolve(audio);
+        }, { once: true });
+        
+        audio.addEventListener('error', (e) => {
+            console.error('Audio preload failed:', audioPath, e);
+            reject(e);
+        }, { once: true });
+        
+        audio.src = audioPath;
+        audio.load();
+    });
+}
+
+// FIXED: Wait for audio to be ready before playing
+async function playAudio(audioPath) {
+    // Prevent multiple simultaneous audio operations
+    if (isAudioLoading) {
+        console.log('Audio already loading, waiting...');
+        return;
     }
     
-    // Check if audio is preloaded
-    let audio;
-    if (audioPreloadCache[audioPath]) {
-        audio = audioPreloadCache[audioPath];
-        audio.currentTime = 0; // Reset to beginning
-    } else {
-        audio = new Audio(audioPath);
+    isAudioLoading = true;
+    
+    try {
+        // Clean up previous audio
+        if (currentAudioElement) {
+            currentAudioElement.pause();
+            currentAudioElement.currentTime = 0;
+        }
+        
+        // Get or load the audio
+        let audio;
+        if (audioPreloadCache[audioPath]) {
+            audio = audioPreloadCache[audioPath];
+            audio.currentTime = 0;
+        } else {
+            // If not preloaded, load it now
+            console.log('Audio not preloaded, loading:', audioPath);
+            audio = await preloadAudio(audioPath);
+        }
+        
+        currentAudioElement = audio;
+        
+        // Wait a tiny bit to ensure audio is really ready
+        await new Promise(resolve => setTimeout(resolve, 50));
+        
+        // Play the audio
+        await audio.play();
+        
+        isAudioLoading = false;
+        
+    } catch (error) {
+        isAudioLoading = false;
+        console.error('Audio playback error:', error, audioPath);
+        
+        // Show a more helpful error message
+        const errorMsg = `Unable to play audio. Please ensure your device volume is on and try clicking the "Replay Word" button.`;
+        alert(errorMsg);
     }
+}
+
+// FIXED: Preload all audio for a level at startup
+async function preloadLevelAudio(vowelNames) {
+    const preloadPromises = [];
     
-    currentAudioElement = audio;
-    
-    // Cleanup after playback
-    audio.addEventListener('ended', () => {
-        if (currentAudioElement === audio) {
-            currentAudioElement = null;
+    vowelNames.forEach(vowelName => {
+        const vowel = VOWEL_DATA.find(v => v.name === vowelName);
+        if (vowel) {
+            vowel.words.forEach(word => {
+                if (!word.audio.includes('vowel_sound_only')) {
+                    preloadPromises.push(
+                        preloadAudio(word.audio).catch(err => {
+                            console.warn('Failed to preload:', word.audio, err);
+                        })
+                    );
+                }
+            });
         }
     });
     
-    // FIXED: Better error handling with retry logic
-    const playPromise = audio.play();
-    
-    if (playPromise !== undefined) {
-        playPromise.catch(error => {
-            console.error('Audio playback failed:', error);
-            
-            // Retry once after a short delay
-            setTimeout(() => {
-                audio.play().catch(retryError => {
-                    console.error('Audio retry failed:', retryError);
-                    alert('Audio failed to play. This may be due to browser autoplay restrictions. Please click the Replay button to hear the sound.');
-                });
-            }, 100);
-        });
-    }
-    
-    return audio;
-}
-
-// FIXED: Preload audio files to reduce loading issues
-function preloadAudio(audioPath) {
-    if (!audioPreloadCache[audioPath]) {
-        const audio = new Audio();
-        audio.preload = 'auto';
-        audio.src = audioPath;
-        audioPreloadCache[audioPath] = audio;
-    }
+    // Wait for all audio to preload (or fail gracefully)
+    await Promise.allSettled(preloadPromises);
+    console.log('Audio preloading complete for vowels:', vowelNames);
 }
 
 function updateScoreAndRoundDisplay() {
@@ -181,7 +223,6 @@ function renderCards(cardsToRender) {
     });
 }
 
-// FIXED: Track mistakes properly
 function handleCardClick(event) {
     if (isProcessingClick) return;
     
@@ -211,7 +252,7 @@ function handleCardClick(event) {
         }, FEEDBACK_DELAY_MS);
     } else {
         clickedCardElement.classList.add('incorrect');
-        mistakes++; // FIXED: Increment mistakes counter
+        mistakes++;
         
         setTimeout(() => {
             clickedCardElement.classList.remove('incorrect');
@@ -359,7 +400,7 @@ function endGame() {
 
     const finalScore = score;
     const finalReplays = replaysUsed;
-    const finalMistakes = mistakes; // FIXED: Track final mistakes
+    const finalMistakes = mistakes;
     const maxRounds = subLevel.rounds;
 
     const diagnosticReport = `
@@ -371,13 +412,11 @@ function endGame() {
         </div>
     `;
 
-    // FIXED: Level 2 pass/fail includes mistakes
     let passLevel = true;
     let feedbackTitle = `Sub-Level ${subLevel.id} Complete!`;
     let feedbackMessage = `Ready for the next challenge. Next: **${subLevels[currentSubLevelIndex + 1]?.name || 'Final Challenge'}**`;
 
     if (isLevel2) {
-        // FIXED: Fail if less than 5/5 OR 2+ replays OR 3+ mistakes
         if (finalScore < maxRounds || finalReplays >= 2 || finalMistakes >= LEVEL2_MAX_MISTAKES) {
             passLevel = false;
             feedbackTitle = "Nice Try! Practice Required";
@@ -385,10 +424,9 @@ function endGame() {
         }
     }
 
-    // Reset state
     score = 0;
     replaysUsed = 0;
-    mistakes = 0; // FIXED: Reset mistakes
+    mistakes = 0;
     lastCorrectVowelName = '';
     currentSubLevelVowelQueue = [];
     isProcessingClick = false;
@@ -447,7 +485,7 @@ function endGame() {
     document.getElementById('backToMenuBtn').addEventListener('click', showMainMenu);
 }
 
-export function startGame(level) {
+export async function startGame(level) {
     if (level === 'level2_hard' || level === 'level2') {
         currentLevelId = 'level2';
     } else {
@@ -457,9 +495,10 @@ export function startGame(level) {
     currentRound = 0;
     score = 0;
     replaysUsed = 0;
-    mistakes = 0; // FIXED: Reset mistakes
+    mistakes = 0;
     lastCorrectVowelName = '';
     isProcessingClick = false;
+    isAudioLoading = false;
 
     const subLevels = GAME_STAGES[currentLevelId];
     const subLevel = subLevels[currentSubLevelIndex];
@@ -467,29 +506,22 @@ export function startGame(level) {
 
     currentSubLevelVowelQueue = [];
     let cardsToRender = [];
+    let vowelsToPreload = [];
 
     if (currentLevelId === 'level1_familiarize') {
         const targetVowels = subLevel.vowels;
+        vowelsToPreload = targetVowels;
+        
         let queue = [];
         queue.push(targetVowels[0], targetVowels[0], targetVowels[0]);
         queue.push(targetVowels[1], targetVowels[1]);
         queue.push(targetVowels[2], targetVowels[2]);
         currentSubLevelVowelQueue = shuffleArray(queue);
 
-        // FIXED: Preload audio for better performance
-        targetVowels.forEach(vowelName => {
-            const vowel = VOWEL_DATA.find(v => v.name === vowelName);
-            if (vowel) {
-                vowel.words.forEach(word => {
-                    if (!word.audio.includes('vowel_sound_only')) {
-                        preloadAudio(word.audio);
-                    }
-                });
-            }
-        });
-
     } else if (currentLevelId === 'level2') {
         const targetVowelNames = subLevel.targetVowels;
+        vowelsToPreload = targetVowelNames;
+        
         const allVowelsForRound = targetVowelNames.map(name => VOWEL_DATA.find(v => v.name === name));
 
         cardsToRender = shuffleArray(allVowelsForRound.map(vowel => ({
@@ -498,18 +530,6 @@ export function startGame(level) {
             content: vowel.image,
             matchId: vowel.name
         })));
-
-        // FIXED: Preload audio for Level 2
-        targetVowelNames.forEach(vowelName => {
-            const vowel = VOWEL_DATA.find(v => v.name === vowelName);
-            if (vowel) {
-                vowel.words.forEach(word => {
-                    if (!word.audio.includes('vowel_sound_only')) {
-                        preloadAudio(word.audio);
-                    }
-                });
-            }
-        });
     }
 
     const appContainer = document.getElementById('app-container');
@@ -518,7 +538,7 @@ export function startGame(level) {
     appContainer.innerHTML = `
         <div class="game-layout-container">
             <h1>LEVEL ${currentLevelId.replace('level', '').toUpperCase()} - Sub-Level ${subLevel.id}: ${subLevel.name}</h1>
-            <p>Click on the card that matches the word you hear.</p>
+            <p>Loading audio files... <span class="loading-indicator"></span></p>
             <div class="game-info-bar">
                 <span id="scoreDisplay">Completed: 0</span>
                 <span id="roundDisplay">Round: 0 / ${totalRounds}</span>
@@ -528,11 +548,26 @@ export function startGame(level) {
                 <div id="progressBar" class="progress-bar"></div>
             </div>
             <div class="controls-container">
-                <button id="replayBtn">Replay Word</button>
+                <button id="replayBtn" disabled>Replay Word</button>
             </div>
             <button id="backToMenuBtn" class="back-btn">Back to Main Menu</button>
         </div>
     `;
+
+    // Preload audio first
+    await preloadLevelAudio(vowelsToPreload);
+
+    // Update UI to show loading complete
+    const loadingText = appContainer.querySelector('p');
+    if (loadingText) {
+        loadingText.innerHTML = 'Click on the card that matches the word you hear.';
+    }
+    
+    // Enable replay button
+    const replayBtn = document.getElementById('replayBtn');
+    if (replayBtn) {
+        replayBtn.disabled = false;
+    }
 
     if (currentLevelId === 'level2' && cardsToRender.length > 0) {
         const gameContainer = document.getElementById('game-container');
@@ -556,7 +591,7 @@ export function startGame(level) {
 
     document.getElementById('backToMenuBtn').addEventListener('click', showMainMenu);
     document.getElementById('replayBtn').addEventListener('click', () => {
-        if (currentRoundAudioPath) {
+        if (currentRoundAudioPath && !isAudioLoading) {
             playAudio(currentRoundAudioPath);
             replaysUsed++;
         }
