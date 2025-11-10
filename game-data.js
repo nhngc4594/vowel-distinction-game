@@ -8,6 +8,12 @@ export const VOWEL_DATA = [
         symbol: "eɪ",
         words: [
             { word: "vowel sound", audio: "audio/acorn/acorn_vowel_sound_only.m4a" },
+            { word: "ace", audio: "audio/acorn/ace.m4a" },
+            { word: "bait", audio: "audio/acorn/bait.m4a" },
+            { word: "cake", audio: "audio/acorn/cake.m4a" },
+            { word: "change", audio: "audio/acorn/change.m4a" },
+            { word: "day", audio: "audio/acorn/day.m4a" },
+            { word: "fake", audio: "audio/acorn/fake.m4a" },
             { word: "great", audio: "audio/acorn/great.m4a" },
             { word: "hate", audio: "audio/acorn/hate.m4a" },
             { word: "jail", audio: "audio/acorn/jail.m4a" },
@@ -26,19 +32,12 @@ export const VOWEL_DATA = [
             { word: "vape", audio: "audio/acorn/vape.m4a" },
             { word: "wait", audio: "audio/acorn/wait.m4a" },
             { word: "yea", audio: "audio/acorn/yea.m4a" },
-            { word: "zane", audio: "audio/acorn/zane.m4a" },
-            { word: "ace", audio: "audio/acorn/ace.m4a" },
-            { word: "ae", audio: "audio/acorn/ae.m4a" },
-            { word: "bait", audio: "audio/acorn/bait.m4a" },
-            { word: "cake", audio: "audio/acorn/cake.m4a" },
-            { word: "change", audio: "audio/acorn/change.m4a" },
-            { word: "day", audio: "audio/acorn/day.m4a" },
-            { word: "fake", audio: "audio/acorn/fake.m4a" }
+            { word: "zane", audio: "audio/acorn/zane.m4a" }
         ],
         image: "images/vowel_card_acorn.jpg"
     },
 
-    // Alligator - short "a" sound /æ/ (FIXED SPELLING)
+    // Alligator - short "a" sound /æ/
     {
         name: "alligator",
         symbol: "æ",
@@ -67,8 +66,7 @@ export const VOWEL_DATA = [
             { word: "vast", audio: "audio/alligator/vast.m4a" },
             { word: "vat", audio: "audio/alligator/vat.m4a" },
             { word: "yeah", audio: "audio/alligator/yeah.m4a" },
-            { word: "zap", audio: "audio/alligator/zap.m4a" },
-            { word: "aa", audio: "audio/alligator/aa.m4a" }
+            { word: "zap", audio: "audio/alligator/zap.m4a" }
         ],
         image: "images/vowel_card_alligator.jpg"
     },
@@ -79,6 +77,7 @@ export const VOWEL_DATA = [
         symbol: "ɔ",
         words: [
             { word: "vowel sound", audio: "audio/australia/australia_vowel_sound_only.m4a" },
+            { word: "all", audio: "audio/australia/all.m4a" },
             { word: "ball", audio: "audio/australia/ball.m4a" },
             { word: "call", audio: "audio/australia/call.m4a" },
             { word: "caught", audio: "audio/australia/caught.m4a" },
@@ -111,10 +110,7 @@ export const VOWEL_DATA = [
             { word: "yall", audio: "audio/australia/yall.m4a" },
             { word: "yawn", audio: "audio/australia/yawn.m4a" },
             { word: "zod", audio: "audio/australia/zod.m4a" },
-            { word: "zogg", audio: "audio/australia/zogg.m4a" },
-            { word: "all", audio: "audio/australia/all.m4a" },
-            { word: "au", audio: "audio/australia/au.m4a" },
-            { word: "a", audio: "audio/australia/a.m4a" }
+            { word: "zogg", audio: "audio/australia/zogg.m4a" }
         ],
         image: "images/vowel_card_australia.jpg"
     },
@@ -125,8 +121,10 @@ export const VOWEL_DATA = [
         symbol: "i",
         words: [
             { word: "vowel sound", audio: "audio/eagle/eagle_vowel_sound_only.m4a" },
+            { word: "beam", audio: "audio/eagle/beam.m4a" },
+            { word: "cheat", audio: "audio/eagle/cheat.m4a" },
+            { word: "cream", audio: "audio/eagle/cream.m4a" },
             { word: "easy", audio: "audio/eagle/easy.m4a" },
-            { word: "ee", audio: "audio/eagle/ee.m4a" },
             { word: "feet", audio: "audio/eagle/feet.m4a" },
             { word: "green", audio: "audio/eagle/green.m4a" },
             { word: "heel", audio: "audio/eagle/heel.m4a" },
@@ -143,16 +141,10 @@ export const VOWEL_DATA = [
             { word: "tea", audio: "audio/eagle/tea.m4a" },
             { word: "three", audio: "audio/eagle/three.m4a" },
             { word: "veer", audio: "audio/eagle/veer.m4a" },
-            { word: "beat", audio: "audio/eagle/beat.m4a" },
-            { word: "cream", audio: "audio/eagle/cream.m4a" },
-            { word: "deer", audio: "audio/eagle/deer.m4a" },
-            { word: "greek", audio: "audio/eagle/greek.m4a" },
             { word: "wheat", audio: "audio/eagle/wheat.m4a" },
             { word: "wheel", audio: "audio/eagle/wheel.m4a" },
             { word: "yeet", audio: "audio/eagle/yeet.m4a" },
-            { word: "zeek", audio: "audio/eagle/zeek.m4a" },
-            { word: "beam", audio: "audio/eagle/beam.m4a" },
-            { word: "cheat", audio: "audio/eagle/cheat.m4a" }
+            { word: "zeek", audio: "audio/eagle/zeek.m4a" }
         ],
         image: "images/vowel_card_eagle.jpg"
     },
@@ -163,10 +155,12 @@ export const VOWEL_DATA = [
         symbol: "ɜː",
         words: [
             { word: "vowel sound", audio: "audio/earth/earth_vowel_sound_only.m4a" },
+            { word: "birth", audio: "audio/earth/birth.m4a" },
+            { word: "burn", audio: "audio/earth/burn.m4a" },
+            { word: "chirp", audio: "audio/earth/chirp.m4a" },
             { word: "dirt", audio: "audio/earth/dirt.m4a" },
             { word: "earn", audio: "audio/earth/earn.m4a" },
             { word: "earth", audio: "audio/earth/earth.m4a" },
-            { word: "er", audio: "audio/earth/er.m4a" },
             { word: "first", audio: "audio/earth/first.m4a" },
             { word: "girth", audio: "audio/earth/girth.m4a" },
             { word: "hurt", audio: "audio/earth/hurt.m4a" },
@@ -185,10 +179,7 @@ export const VOWEL_DATA = [
             { word: "turn", audio: "audio/earth/turn.m4a" },
             { word: "verse", audio: "audio/earth/verse.m4a" },
             { word: "worst", audio: "audio/earth/worst.m4a" },
-            { word: "yearn", audio: "audio/earth/yearn.m4a" },
-            { word: "birth", audio: "audio/earth/birth.m4a" },
-            { word: "burn", audio: "audio/earth/burn.m4a" },
-            { word: "chirp", audio: "audio/earth/chirp.m4a" }
+            { word: "yearn", audio: "audio/earth/yearn.m4a" }
         ],
         image: "images/vowel_card_earth.jpg"
     },
@@ -199,6 +190,10 @@ export const VOWEL_DATA = [
         symbol: "e",
         words: [
             { word: "vowel sound", audio: "audio/elephant/elephant_vowel_sound_only.m4a" },
+            { word: "bed", audio: "audio/elephant/bed.m4a" },
+            { word: "check", audio: "audio/elephant/check.m4a" },
+            { word: "dead", audio: "audio/elephant/dead.m4a" },
+            { word: "egg", audio: "audio/elephant/egg.m4a" },
             { word: "fetch", audio: "audio/elephant/fetch.m4a" },
             { word: "get", audio: "audio/elephant/get.m4a" },
             { word: "head", audio: "audio/elephant/head.m4a" },
@@ -216,14 +211,9 @@ export const VOWEL_DATA = [
             { word: "tell", audio: "audio/elephant/tell.m4a" },
             { word: "then", audio: "audio/elephant/then.m4a" },
             { word: "vent", audio: "audio/elephant/vent.m4a" },
-            { word: "bed", audio: "audio/elephant/bed.m4a" },
-            { word: "dead", audio: "audio/elephant/dead.m4a" },
             { word: "when", audio: "audio/elephant/when.m4a" },
             { word: "yes", audio: "audio/elephant/yes.m4a" },
-            { word: "zed", audio: "audio/elephant/zed.m4a" },
-            { word: "check", audio: "audio/elephant/check.m4a" },
-            { word: "e", audio: "audio/elephant/e.m4a" },
-            { word: "egg", audio: "audio/elephant/egg.m4a" }
+            { word: "zed", audio: "audio/elephant/zed.m4a" }
         ],
         image: "images/vowel_card_elephant.jpg"
     },
@@ -234,6 +224,11 @@ export const VOWEL_DATA = [
         symbol: "ʊ",
         words: [
             { word: "vowel sound", audio: "audio/foot/foot_vowel_sound_only.m4a" },
+            { word: "book", audio: "audio/foot/book.m4a" },
+            { word: "bull", audio: "audio/foot/bull.m4a" },
+            { word: "bush", audio: "audio/foot/bush.m4a" },
+            { word: "cook", audio: "audio/foot/cook.m4a" },
+            { word: "foot", audio: "audio/foot/foot.m4a" },
             { word: "good", audio: "audio/foot/good.m4a" },
             { word: "hood", audio: "audio/foot/hood.m4a" },
             { word: "hook", audio: "audio/foot/hook.m4a" },
@@ -245,15 +240,9 @@ export const VOWEL_DATA = [
             { word: "should", audio: "audio/foot/should.m4a" },
             { word: "stood", audio: "audio/foot/stood.m4a" },
             { word: "took", audio: "audio/foot/took.m4a" },
-            { word: "u", audio: "audio/foot/u.m4a" },
             { word: "vulf", audio: "audio/foot/vulf.m4a" },
             { word: "wolf", audio: "audio/foot/wolf.m4a" },
-            { word: "wood", audio: "audio/foot/wood.m4a" },
-            { word: "book", audio: "audio/foot/book.m4a" },
-            { word: "bull", audio: "audio/foot/bull.m4a" },
-            { word: "bush", audio: "audio/foot/bush.m4a" },
-            { word: "cook", audio: "audio/foot/cook.m4a" },
-            { word: "foot", audio: "audio/foot/foot.m4a" }
+            { word: "wood", audio: "audio/foot/wood.m4a" }
         ],
         image: "images/vowel_card_foot.jpg"
     },
@@ -264,8 +253,14 @@ export const VOWEL_DATA = [
         symbol: "aɪ",
         words: [
             { word: "vowel sound", audio: "audio/icecream/icecream_vowel_sound_only.m4a" },
+            { word: "bike", audio: "audio/icecream/bike.m4a" },
+            { word: "chime", audio: "audio/icecream/chime.m4a" },
+            { word: "die", audio: "audio/icecream/die.m4a" },
+            { word: "dike", audio: "audio/icecream/dike.m4a" },
+            { word: "fight", audio: "audio/icecream/fight.m4a" },
+            { word: "guy", audio: "audio/icecream/guy.m4a" },
+            { word: "height", audio: "audio/icecream/height.m4a" },
             { word: "ice", audio: "audio/icecream/ice.m4a" },
-            { word: "ie", audio: "audio/icecream/ie.m4a" },
             { word: "im", audio: "audio/icecream/im.m4a" },
             { word: "jibe", audio: "audio/icecream/jibe.m4a" },
             { word: "kite", audio: "audio/icecream/kite.m4a" },
@@ -283,14 +278,7 @@ export const VOWEL_DATA = [
             { word: "time", audio: "audio/icecream/time.m4a" },
             { word: "vice", audio: "audio/icecream/vice.m4a" },
             { word: "vine", audio: "audio/icecream/vine.m4a" },
-            { word: "wine", audio: "audio/icecream/wine.m4a" },
-            { word: "bike", audio: "audio/icecream/bike.m4a" },
-            { word: "chime", audio: "audio/icecream/chime.m4a" },
-            { word: "die", audio: "audio/icecream/die.m4a" },
-            { word: "dike", audio: "audio/icecream/dike.m4a" },
-            { word: "fight", audio: "audio/icecream/fight.m4a" },
-            { word: "guy", audio: "audio/icecream/guy.m4a" },
-            { word: "height", audio: "audio/icecream/height.m4a" }
+            { word: "wine", audio: "audio/icecream/wine.m4a" }
         ],
         image: "images/vowel_card_icecream.jpg"
     },
@@ -301,6 +289,11 @@ export const VOWEL_DATA = [
         symbol: "oʊ",
         words: [
             { word: "vowel sound", audio: "audio/ocean/ocean_vowel_sound_only.m4a" },
+            { word: "bold", audio: "audio/ocean/bold.m4a" },
+            { word: "bone", audio: "audio/ocean/bone.m4a" },
+            { word: "choke", audio: "audio/ocean/choke.m4a" },
+            { word: "coat", audio: "audio/ocean/coat.m4a" },
+            { word: "dont", audio: "audio/ocean/dont.m4a" },
             { word: "flow", audio: "audio/ocean/flow.m4a" },
             { word: "goat", audio: "audio/ocean/goat.m4a" },
             { word: "host", audio: "audio/ocean/host.m4a" },
@@ -308,7 +301,6 @@ export const VOWEL_DATA = [
             { word: "loan", audio: "audio/ocean/loan.m4a" },
             { word: "mope", audio: "audio/ocean/mope.m4a" },
             { word: "note", audio: "audio/ocean/note.m4a" },
-            { word: "oh", audio: "audio/ocean/oh.m4a" },
             { word: "own", audio: "audio/ocean/own.m4a" },
             { word: "poke", audio: "audio/ocean/poke.m4a" },
             { word: "quote", audio: "audio/ocean/quote.m4a" },
@@ -321,12 +313,7 @@ export const VOWEL_DATA = [
             { word: "vote", audio: "audio/ocean/vote.m4a" },
             { word: "woke", audio: "audio/ocean/woke.m4a" },
             { word: "yo", audio: "audio/ocean/yo.m4a" },
-            { word: "zone", audio: "audio/ocean/zone.m4a" },
-            { word: "bold", audio: "audio/ocean/bold.m4a" },
-            { word: "bone", audio: "audio/ocean/bone.m4a" },
-            { word: "choke", audio: "audio/ocean/choke.m4a" },
-            { word: "coat", audio: "audio/ocean/coat.m4a" },
-            { word: "dont", audio: "audio/ocean/dont.m4a" }
+            { word: "zone", audio: "audio/ocean/zone.m4a" }
         ],
         image: "images/vowel_card_ocean.jpg"
     },
@@ -337,14 +324,6 @@ export const VOWEL_DATA = [
         symbol: "ɔɪ",
         words: [
             { word: "vowel sound", audio: "audio/oil/oil_vowel_sound_only.m4a" },
-            { word: "oi", audio: "audio/oil/oi.m4a" },
-            { word: "oil", audio: "audio/oil/oil.m4a" },
-            { word: "poise", audio: "audio/oil/poise.m4a" },
-            { word: "roy", audio: "audio/oil/roy.m4a" },
-            { word: "royal", audio: "audio/oil/royal.m4a" },
-            { word: "soy", audio: "audio/oil/soy.m4a" },
-            { word: "toy", audio: "audio/oil/toy.m4a" },
-            { word: "void", audio: "audio/oil/void.m4a" },
             { word: "boy", audio: "audio/oil/boy.m4a" },
             { word: "choice", audio: "audio/oil/choice.m4a" },
             { word: "coin", audio: "audio/oil/coin.m4a" },
@@ -353,7 +332,14 @@ export const VOWEL_DATA = [
             { word: "joy", audio: "audio/oil/joy.m4a" },
             { word: "loin", audio: "audio/oil/loin.m4a" },
             { word: "moist", audio: "audio/oil/moist.m4a" },
-            { word: "noise", audio: "audio/oil/noise.m4a" }
+            { word: "noise", audio: "audio/oil/noise.m4a" },
+            { word: "oil", audio: "audio/oil/oil.m4a" },
+            { word: "poise", audio: "audio/oil/poise.m4a" },
+            { word: "roy", audio: "audio/oil/roy.m4a" },
+            { word: "royal", audio: "audio/oil/royal.m4a" },
+            { word: "soy", audio: "audio/oil/soy.m4a" },
+            { word: "toy", audio: "audio/oil/toy.m4a" },
+            { word: "void", audio: "audio/oil/void.m4a" }
         ],
         image: "images/vowel_card_oil.jpg"
     },
@@ -364,6 +350,11 @@ export const VOWEL_DATA = [
         symbol: "ɑ",
         words: [
             { word: "vowel sound", audio: "audio/ostrich/ostrich_vowel_sound_only.m4a" },
+            { word: "box", audio: "audio/ostrich/box.m4a" },
+            { word: "chalk", audio: "audio/ostrich/chalk.m4a" },
+            { word: "cot", audio: "audio/ostrich/cot.m4a" },
+            { word: "dot", audio: "audio/ostrich/dot.m4a" },
+            { word: "fox", audio: "audio/ostrich/fox.m4a" },
             { word: "got", audio: "audio/ostrich/got.m4a" },
             { word: "hot", audio: "audio/ostrich/hot.m4a" },
             { word: "jot", audio: "audio/ostrich/jot.m4a" },
@@ -380,13 +371,7 @@ export const VOWEL_DATA = [
             { word: "thaa", audio: "audio/ostrich/thaa.m4a" },
             { word: "vox", audio: "audio/ostrich/vox.m4a" },
             { word: "watch", audio: "audio/ostrich/watch.m4a" },
-            { word: "yacht", audio: "audio/ostrich/yacht.m4a" },
-            { word: "a", audio: "audio/ostrich/a.m4a" },
-            { word: "box", audio: "audio/ostrich/box.m4a" },
-            { word: "chalk", audio: "audio/ostrich/chalk.m4a" },
-            { word: "cot", audio: "audio/ostrich/cot.m4a" },
-            { word: "dot", audio: "audio/ostrich/dot.m4a" },
-            { word: "fox", audio: "audio/ostrich/fox.m4a" }
+            { word: "yacht", audio: "audio/ostrich/yacht.m4a" }
         ],
         image: "images/vowel_card_ostrich.jpg"
     },
@@ -397,6 +382,14 @@ export const VOWEL_DATA = [
         symbol: "aʊ",
         words: [
             { word: "vowel sound", audio: "audio/owl/owl_vowel_sound_only.m4a" },
+            { word: "bow", audio: "audio/owl/bow.m4a" },
+            { word: "chow", audio: "audio/owl/chow.m4a" },
+            { word: "cow", audio: "audio/owl/cow.m4a" },
+            { word: "doubt", audio: "audio/owl/doubt.m4a" },
+            { word: "found", audio: "audio/owl/found.m4a" },
+            { word: "gown", audio: "audio/owl/gown.m4a" },
+            { word: "house", audio: "audio/owl/house.m4a" },
+            { word: "joust", audio: "audio/owl/joust.m4a" },
             { word: "loud", audio: "audio/owl/loud.m4a" },
             { word: "mouse", audio: "audio/owl/mouse.m4a" },
             { word: "mouth", audio: "audio/owl/mouth.m4a" },
@@ -411,16 +404,7 @@ export const VOWEL_DATA = [
             { word: "thou", audio: "audio/owl/thou.m4a" },
             { word: "town", audio: "audio/owl/town.m4a" },
             { word: "vow", audio: "audio/owl/vow.m4a" },
-            { word: "wow", audio: "audio/owl/wow.m4a" },
-            { word: "ao", audio: "audio/owl/ao.m4a" },
-            { word: "bow", audio: "audio/owl/bow.m4a" },
-            { word: "chow", audio: "audio/owl/chow.m4a" },
-            { word: "cow", audio: "audio/owl/cow.m4a" },
-            { word: "doubt", audio: "audio/owl/doubt.m4a" },
-            { word: "found", audio: "audio/owl/found.m4a" },
-            { word: "gown", audio: "audio/owl/gown.m4a" },
-            { word: "house", audio: "audio/owl/house.m4a" },
-            { word: "joust", audio: "audio/owl/joust.m4a" }
+            { word: "wow", audio: "audio/owl/wow.m4a" }
         ],
         image: "images/vowel_card_owl.jpg"
     },
@@ -431,7 +415,14 @@ export const VOWEL_DATA = [
         symbol: "ɪ",
         words: [
             { word: "vowel sound", audio: "audio/pin/pin_vowel_sound_only.m4a" },
-            { word: "i", audio: "audio/pin/i.m4a" },
+            { word: "big", audio: "audio/pin/big.m4a" },
+            { word: "chick", audio: "audio/pin/chick.m4a" },
+            { word: "chips", audio: "audio/pin/chips.m4a" },
+            { word: "dip", audio: "audio/pin/dip.m4a" },
+            { word: "fish", audio: "audio/pin/fish.m4a" },
+            { word: "give", audio: "audio/pin/give.m4a" },
+            { word: "gym", audio: "audio/pin/gym.m4a" },
+            { word: "hit", audio: "audio/pin/hit.m4a" },
             { word: "it", audio: "audio/pin/it.m4a" },
             { word: "kick", audio: "audio/pin/kick.m4a" },
             { word: "knit", audio: "audio/pin/knit.m4a" },
@@ -445,17 +436,8 @@ export const VOWEL_DATA = [
             { word: "thin", audio: "audio/pin/thin.m4a" },
             { word: "till", audio: "audio/pin/till.m4a" },
             { word: "vick", audio: "audio/pin/vick.m4a" },
-            { word: "big", audio: "audio/pin/big.m4a" },
-            { word: "chips", audio: "audio/pin/chips.m4a" },
-            { word: "dip", audio: "audio/pin/dip.m4a" },
-            { word: "fish", audio: "audio/pin/fish.m4a" },
             { word: "wish", audio: "audio/pin/wish.m4a" },
-            { word: "zip", audio: "audio/pin/zip.m4a" },
-            { word: "chick", audio: "audio/pin/chick.m4a" },
-            { word: "dinner", audio: "audio/pin/dinner.m4a" },
-            { word: "give", audio: "audio/pin/give.m4a" },
-            { word: "gym", audio: "audio/pin/gym.m4a" },
-            { word: "hit", audio: "audio/pin/hit.m4a" }
+            { word: "zip", audio: "audio/pin/zip.m4a" }
         ],
         image: "images/vowel_card_pin.jpg"
     },
@@ -466,6 +448,15 @@ export const VOWEL_DATA = [
         symbol: "u",
         words: [
             { word: "vowel sound", audio: "audio/ukulele/ukulele_vowel_sound_only.m4a" },
+            { word: "boots", audio: "audio/ukulele/boots.m4a" },
+            { word: "choose", audio: "audio/ukulele/choose.m4a" },
+            { word: "cute", audio: "audio/ukulele/cute.m4a" },
+            { word: "do", audio: "audio/ukulele/do.m4a" },
+            { word: "food", audio: "audio/ukulele/food.m4a" },
+            { word: "goo", audio: "audio/ukulele/goo.m4a" },
+            { word: "hoop", audio: "audio/ukulele/hoop.m4a" },
+            { word: "june", audio: "audio/ukulele/june.m4a" },
+            { word: "luke", audio: "audio/ukulele/luke.m4a" },
             { word: "mooch", audio: "audio/ukulele/mooch.m4a" },
             { word: "new", audio: "audio/ukulele/new.m4a" },
             { word: "oof", audio: "audio/ukulele/oof.m4a" },
@@ -476,20 +467,10 @@ export const VOWEL_DATA = [
             { word: "soup", audio: "audio/ukulele/soup.m4a" },
             { word: "threw", audio: "audio/ukulele/threw.m4a" },
             { word: "two", audio: "audio/ukulele/two.m4a" },
-            { word: "uu", audio: "audio/ukulele/uu.m4a" },
             { word: "who", audio: "audio/ukulele/who.m4a" },
             { word: "wooh", audio: "audio/ukulele/wooh.m4a" },
             { word: "you", audio: "audio/ukulele/you.m4a" },
-            { word: "zoo", audio: "audio/ukulele/zoo.m4a" },
-            { word: "boots", audio: "audio/ukulele/boots.m4a" },
-            { word: "choose", audio: "audio/ukulele/choose.m4a" },
-            { word: "cute", audio: "audio/ukulele/cute.m4a" },
-            { word: "do", audio: "audio/ukulele/do.m4a" },
-            { word: "food", audio: "audio/ukulele/food.m4a" },
-            { word: "goo", audio: "audio/ukulele/goo.m4a" },
-            { word: "hoop", audio: "audio/ukulele/hoop.m4a" },
-            { word: "june", audio: "audio/ukulele/june.m4a" },
-            { word: "luke", audio: "audio/ukulele/luke.m4a" }
+            { word: "zoo", audio: "audio/ukulele/zoo.m4a" }
         ],
         image: "images/vowel_card_ukulele.jpg"
     },
@@ -500,17 +481,6 @@ export const VOWEL_DATA = [
         symbol: "ʌ",
         words: [
             { word: "vowel sound", audio: "audio/umbrella/umbrella_vowel_sound_only.m4a" },
-            { word: "punch", audio: "audio/umbrella/punch.m4a" },
-            { word: "run", audio: "audio/umbrella/run.m4a" },
-            { word: "shush", audio: "audio/umbrella/shush.m4a" },
-            { word: "sun", audio: "audio/umbrella/sun.m4a" },
-            { word: "the", audio: "audio/umbrella/the.m4a" },
-            { word: "tug", audio: "audio/umbrella/tug.m4a" },
-            { word: "uh", audio: "audio/umbrella/uh.m4a" },
-            { word: "up", audio: "audio/umbrella/up.m4a" },
-            { word: "us", audio: "audio/umbrella/us.m4a" },
-            { word: "what", audio: "audio/umbrella/what.m4a" },
-            { word: "young", audio: "audio/umbrella/young.m4a" },
             { word: "bug", audio: "audio/umbrella/bug.m4a" },
             { word: "chug", audio: "audio/umbrella/chug.m4a" },
             { word: "cup", audio: "audio/umbrella/cup.m4a" },
@@ -522,7 +492,17 @@ export const VOWEL_DATA = [
             { word: "jug", audio: "audio/umbrella/jug.m4a" },
             { word: "lunch", audio: "audio/umbrella/lunch.m4a" },
             { word: "mutt", audio: "audio/umbrella/mutt.m4a" },
-            { word: "nut", audio: "audio/umbrella/nut.m4a" }
+            { word: "nut", audio: "audio/umbrella/nut.m4a" },
+            { word: "punch", audio: "audio/umbrella/punch.m4a" },
+            { word: "run", audio: "audio/umbrella/run.m4a" },
+            { word: "shush", audio: "audio/umbrella/shush.m4a" },
+            { word: "sun", audio: "audio/umbrella/sun.m4a" },
+            { word: "the", audio: "audio/umbrella/the.m4a" },
+            { word: "tug", audio: "audio/umbrella/tug.m4a" },
+            { word: "up", audio: "audio/umbrella/up.m4a" },
+            { word: "us", audio: "audio/umbrella/us.m4a" },
+            { word: "what", audio: "audio/umbrella/what.m4a" },
+            { word: "young", audio: "audio/umbrella/young.m4a" }
         ],
         image: "images/vowel_card_umbrella.jpg"
     }
