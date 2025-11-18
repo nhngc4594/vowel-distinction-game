@@ -188,34 +188,39 @@ p {
     flex-wrap: wrap;
 }
 
-#playWordBtn {
-    padding: 12px 25px;
-    font-size: 1.1em;
+.play-word-btn {
+    padding: 15px 30px !important;
+    font-size: 1.2em !important;
     cursor: pointer;
     border: none;
     border-radius: 8px;
-    background-color: #007bff;
+    background-color: #007bff !important;
     color: white;
     transition: background-color 0.3s, transform 0.2s;
     font-weight: bold;
     box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
 }
 
-#playWordBtn:hover:not(:disabled) {
-    background-color: #0056b3;
+.play-word-btn:hover:not(:disabled) {
+    background-color: #0056b3 !important;
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 123, 255, 0.4);
 }
 
-#playWordBtn:disabled {
-    background-color: #6c757d;
+.play-word-btn:disabled {
+    background-color: #6c757d !important;
     cursor: not-allowed;
     opacity: 0.6;
 }
 
-#playWordBtn:focus {
-    outline: 2px solid #0056b3;
-    outline-offset: 2px;
+.replay-variant {
+    background-color: #28a745 !important;
+    padding: 12px 25px !important;
+    font-size: 1em !important;
+}
+
+.replay-variant:hover:not(:disabled) {
+    background-color: #218838 !important;
 }
 
 #replayBtn {
