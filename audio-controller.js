@@ -231,6 +231,12 @@ function handleCardClick(event) {
 
     isProcessingClick = true;
     
+    // Hide play button once user starts selecting
+    const playBtn = document.getElementById('playWordBtn');
+    if (playBtn) {
+        playBtn.style.display = 'none';
+    }
+    
     document.querySelectorAll('.game-card').forEach(card => {
         card.classList.add('disabled');
     });
@@ -384,15 +390,19 @@ export function startNewRound() {
     const randomIndex = Math.floor(Math.random() * availableWords.length);
     const promptAudio = availableWords[randomIndex];
 
-    currentRoundAudioPath = promptAudio.audio;
-    correctAnswerId = correctVowelName;
-    
     // FIXED: Don't autoplay - let user click play button for mobile compatibility
     // Show the play button and enable it
     const playBtn = document.getElementById('playWordBtn');
     if (playBtn) {
         playBtn.style.display = 'inline-block';
         playBtn.disabled = false;
+        playBtn.textContent = '🔊 Play Word';
+    }
+    
+    // Also enable replay button
+    const replayBtn = document.getElementById('replayBtn');
+    if (replayBtn) {
+        replayBtn.disabled = false;
     }
 }
 
@@ -555,6 +565,7 @@ export async function startGame(level) {
                 <div id="progressBar" class="progress-bar"></div>
             </div>
             <div class="controls-container">
+                <button id="playWordBtn" class="primary-btn" style="display: none;" disabled>🔊 Play Word</button>
                 <button id="replayBtn" disabled>Replay Word</button>
             </div>
             <button id="backToMenuBtn" class="back-btn">Back to Main Menu</button>
@@ -597,6 +608,18 @@ export async function startGame(level) {
     startNewRound();
 
     document.getElementById('backToMenuBtn').addEventListener('click', showMainMenu);
+    
+    document.getElementById('playWordBtn').addEventListener('click', () => {
+        if (currentRoundAudioPath && !isAudioLoading) {
+            playAudio(currentRoundAudioPath);
+            // Hide play button after first play
+            const playBtn = document.getElementById('playWordBtn');
+            if (playBtn) {
+                playBtn.style.display = 'none';
+            }
+        }
+    });
+    
     document.getElementById('replayBtn').addEventListener('click', () => {
         if (currentRoundAudioPath && !isAudioLoading) {
             playAudio(currentRoundAudioPath);
