@@ -188,39 +188,64 @@ p {
     flex-wrap: wrap;
 }
 
+/* Play Word Button - Blue, large, prominent */
 .play-word-btn {
-    padding: 15px 30px !important;
-    font-size: 1.2em !important;
+    padding: 15px 35px;
+    font-size: 1.3em;
     cursor: pointer;
     border: none;
     border-radius: 8px;
-    background-color: #007bff !important;
+    background-color: #007bff;
     color: white;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: all 0.3s;
     font-weight: bold;
     box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
 }
 
 .play-word-btn:hover:not(:disabled) {
-    background-color: #0056b3 !important;
+    background-color: #0056b3;
     transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 123, 255, 0.4);
+    box-shadow: 0 6px 10px rgba(0, 123, 255, 0.4);
+}
+
+.play-word-btn:active:not(:disabled) {
+    transform: translateY(0);
 }
 
 .play-word-btn:disabled {
-    background-color: #6c757d !important;
+    background-color: #6c757d;
     cursor: not-allowed;
     opacity: 0.6;
 }
 
-.replay-variant {
-    background-color: #28a745 !important;
-    padding: 12px 25px !important;
-    font-size: 1em !important;
+/* Replay Word Button - Green, slightly smaller */
+.replay-word-btn {
+    padding: 12px 25px;
+    font-size: 1.1em;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    background-color: #28a745;
+    color: white;
+    transition: all 0.3s;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(40, 167, 69, 0.3);
 }
 
-.replay-variant:hover:not(:disabled) {
-    background-color: #218838 !important;
+.replay-word-btn:hover:not(:disabled) {
+    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 10px rgba(40, 167, 69, 0.4);
+}
+
+.replay-word-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.replay-word-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 #replayBtn {
