@@ -231,12 +231,6 @@ function handleCardClick(event) {
 
     isProcessingClick = true;
     
-    // Hide play button once user starts selecting
-    const playBtn = document.getElementById('playWordBtn');
-    if (playBtn) {
-        playBtn.style.display = 'none';
-    }
-    
     document.querySelectorAll('.game-card').forEach(card => {
         card.classList.add('disabled');
     });
@@ -565,8 +559,8 @@ export async function startGame(level) {
                 <div id="progressBar" class="progress-bar"></div>
             </div>
             <div class="controls-container">
-                <button id="playWordBtn" class="primary-btn" style="display: none;" disabled>🔊 Play Word</button>
-                <button id="replayBtn" disabled>Replay Word</button>
+                <button id="playWordBtn" class="primary-btn play-word-btn">🔊 Play Word</button>
+                <button id="replayBtn">Replay Word</button>
             </div>
             <button id="backToMenuBtn" class="back-btn">Back to Main Menu</button>
         </div>
@@ -578,13 +572,18 @@ export async function startGame(level) {
     // Update UI to show loading complete
     const loadingText = appContainer.querySelector('p');
     if (loadingText) {
-        loadingText.innerHTML = 'Click on the card that matches the word you hear.';
+        loadingText.innerHTML = 'Click "Play Word" to hear the sound, then select the matching card.';
     }
     
-    // Enable replay button
+    // Enable buttons
     const replayBtn = document.getElementById('replayBtn');
     if (replayBtn) {
         replayBtn.disabled = false;
+    }
+    
+    const playBtn = document.getElementById('playWordBtn');
+    if (playBtn) {
+        playBtn.disabled = false;
     }
 
     if (currentLevelId === 'level2' && cardsToRender.length > 0) {
@@ -612,10 +611,12 @@ export async function startGame(level) {
     document.getElementById('playWordBtn').addEventListener('click', () => {
         if (currentRoundAudioPath && !isAudioLoading) {
             playAudio(currentRoundAudioPath);
-            // Hide play button after first play
+            // Change button text after first play
             const playBtn = document.getElementById('playWordBtn');
             if (playBtn) {
-                playBtn.style.display = 'none';
+                playBtn.textContent = '🔊 Replay';
+                playBtn.classList.remove('play-word-btn');
+                playBtn.classList.add('replay-variant');
             }
         }
     });
