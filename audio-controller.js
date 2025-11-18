@@ -384,9 +384,16 @@ export function startNewRound() {
     const randomIndex = Math.floor(Math.random() * availableWords.length);
     const promptAudio = availableWords[randomIndex];
 
-    playAudio(promptAudio.audio);
     currentRoundAudioPath = promptAudio.audio;
     correctAnswerId = correctVowelName;
+    
+    // FIXED: Don't autoplay - let user click play button for mobile compatibility
+    // Show the play button and enable it
+    const playBtn = document.getElementById('playWordBtn');
+    if (playBtn) {
+        playBtn.style.display = 'inline-block';
+        playBtn.disabled = false;
+    }
 }
 
 function endGame() {
